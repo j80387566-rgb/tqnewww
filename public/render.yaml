@@ -1,0 +1,9 @@
+services:
+  - name: mi-web-php
+    type: web
+    env: docker
+    plan: free            # Cambia a "starter" o "standard" si quieres
+    branch: main
+    region: oregon        # Puedes usar frankfurt si estás en Europa
+    healthCheckPath: "/"
+    dockerfilePath: ./Dockerfile
